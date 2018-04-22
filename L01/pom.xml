@@ -5,23 +5,24 @@
     <modelVersion>4.0.0</modelVersion>
     <!-- Project Object Model -->
 
-    <name>L01</name>
+    <groupId>ru.otus</groupId>
+    <artifactId>L01</artifactId>
+    <version>2018-04</version>
+
+    <name>L01_comp</name>
     <description>OTUS Java homework 01</description>
+
     <developers>
         <developer>
             <name>Eugene Maksimenko</name>
         </developer>
     </developers>
 
-    <groupId>ru.otus</groupId>
-    <artifactId>L01</artifactId>
-    <version>2018-04</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <library.path>/usr/lib/jvm/java-8-oracle/jre/lib</library.path>
+        <maven.compiler.source>1.9</maven.compiler.source>
+        <maven.compiler.target>1.9</maven.compiler.target>
     </properties>
 
     <dependencies>
@@ -30,36 +31,14 @@
             <artifactId>guava</artifactId>
             <version>23.0</version>
         </dependency>
-
-        <dependency>
-            <groupId>net.sf.proguard</groupId>
-            <artifactId>proguard-base</artifactId>
-            <version>6.0.2</version>
-        </dependency>
     </dependencies>
 
     <build>
-        <finalName>${project.name}-${java.version}-${env.USER}</finalName>
+        <finalName>${project.name}</finalName>
 
         <plugins>
-
             <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.0.0</version>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <mainClass>ru.otus.L01.Main</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
-                <version>3.0.0</version>
                 <executions>
                     <execution>
                         <id>my-maven-assembly-plugin</id>
@@ -69,14 +48,15 @@
                         </goals>
                     </execution>
                 </executions>
+
                 <configuration>
-                    <appendAssemblyId>true</appendAssemblyId>
+                    <appendAssemblyId>false</appendAssemblyId>
                     <descriptorRefs>
                         <descriptorRef>jar-with-dependencies</descriptorRef>
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>ru.otus.L01.Main</mainClass>
+                            <mainClass>ru.otus.l011.Main</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
@@ -86,6 +66,15 @@
             <plugin>
                 <groupId>com.github.wvengen</groupId>
                 <artifactId>proguard-maven-plugin</artifactId>
+                <version>2.0.14</version>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.sf.proguard</groupId>
+                        <artifactId>proguard-base</artifactId>
+                        <version>6.0.2</version>
+                    </dependency>
+                </dependencies>
+
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -95,24 +84,12 @@
 
                 <configuration>
                     <options>
-                        <option>-keep public class * { *; }</option>
-                        <option>-keep class com.google.commons.** { *; }</option>
-                        <option>-allowaccessmodification</option>
-                        <option>-dontoptimize</option>
-                        <option>-dontshrink</option>
-                        <option>-dontnote</option>
+                        <option>-keep public class ru.otus.l011.Main { public static void main(java.lang.String[]); }</option>
                         <option>-dontwarn</option> <!-- added option to ignore com.sun missing classes -->
-                        <option>-keepattributes Signature</option>
                     </options>
                     <obfuscate>true</obfuscate>
-                    <injar>${project.build.finalName}-jar-with-dependencies.jar</injar>
+                    <!--injar>${project.build.finalName}-jar-with-dependencies.jar</injar-->
                     <outjar>${project.build.finalName}-obfuscated.jar</outjar>
-                    <outputDirectory>${project.build.directory}</outputDirectory>
-                    <proguardInclude>${basedir}/proguard.conf</proguardInclude>
-                    <libs>
-                        <lib>${library.path}/rt.jar</lib>
-                        <lib>${library.path}/jsse.jar</lib>
-                    </libs>
                 </configuration>
             </plugin>
 

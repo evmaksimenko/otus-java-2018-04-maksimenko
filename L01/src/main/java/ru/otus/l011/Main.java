@@ -1,6 +1,10 @@
-package ru.otus.L01;
+package ru.otus.l011;
 
-import com.google.common.graph.*;
+import com.google.common.graph.MutableGraph;
+
+import com.google.common.graph.GraphBuilder;
+
+
 
 public class Main {
     public static void main(String[] args) {
